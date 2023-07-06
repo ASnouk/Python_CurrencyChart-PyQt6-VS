@@ -1,5 +1,5 @@
 # Python_CurrencyChart-PyQt6-VS
-Python PyQt6 project VS Code - Створення графіків курсів НБУ по роках для спостереження за тенденціями змін.
+Python PyQt6 project VS Code - Creation of schedules of NBU exchange rates by year to monitor change trends.
 
 IDE - Visual Studio Code
 
