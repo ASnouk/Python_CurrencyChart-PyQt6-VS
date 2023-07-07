@@ -6,14 +6,16 @@ import webbrowser
 import datetime as dt
 from dateutil.relativedelta import relativedelta
 
-from PyQt6 import QtCore, QtWidgets
-from PyQt6.QtGui import QColor, QIcon, QBrush
+from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox, QWidget
 from MainWindow_ui import Ui_MainWindow
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
+
+from report import generate_report
+from db_sqlite import add_db_sqlite, load_data_report_sqlite
 
 
 class Error_MessageBox_Window(QWidget):
@@ -37,6 +39,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QMainWindow.__init__(self)
         self.setupUi(self)
 
+        # connect
+        self.updateButton.clicked.connect(self.update_plot)    
+        self.day_box.currentIndexChanged.connect(self.on_day_box_index_changed)
+        self.month_box.currentIndexChanged.connect(self.on_month_box_index_changed)
+        self.year_box.currentTextChanged.connect(self.on_year_box_value_changed)
+        self.loadButton.clicked.connect(self.on_loadButton_clicked_)        
+        self.reportButton.clicked.connect(self.on_reportButton_clicked_)
+
         # year        
         for x in range(5):
             self.year_box.addItem(format(dt.date.today().year - x, ""))
@@ -49,28 +59,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.canvas = MplCanvas(self, width=5, height=4, dpi=100)  
         self.navi_toolbar = NavigationToolbar(self.canvas, self)
         self.verticalLayout_graf.addWidget(self.canvas)
-        self.verticalLayout_graf.addWidget(self.navi_toolbar)
-                
+        self.verticalLayout_graf.addWidget(self.navi_toolbar)                
         self.update_plot()
         self.show()        
-
-        # connect
-        self.updateButton.clicked.connect(self.update_plot)    
-
-        self.day_box.currentIndexChanged.connect(self.on_day_box_index_changed)
-        self.month_box.currentIndexChanged.connect(self.on_month_box_index_changed)
-        self.year_box.currentTextChanged.connect(self.on_year_box_value_changed)
-        self.loadButton.clicked.connect(self.on_loadButton_clicked)
+        
+        ##########################################################################        
+        # add curs db        
+        ##########################################################################        
+        curr_code = self.curr_box.currentText()[:3]        
+        #
+        # sqlite
+        add_db_sqlite(self.data_db, curr_code)
 
 
     # calc data
     def calc_data(self):
-
+        #
         self.xdata = []
+        self.data_db = []
         self.ydata = []
         self.data_year = int(self.year_box.currentText()) - int(self.minus_year.value())
         date_min = dt.datetime.today()
-        date_max_ = dt.datetime.today()
+        date_max = dt.datetime.today()
         if self.check_day.isChecked():
             date_now = dt.datetime.strptime(self.day_box.currentText() + dt.datetime.today().strftime(".%m.%Y"), '%d.%m.%Y').date()
             date_min = date_now + dt.timedelta(days=int(self.minus_day.value()*-1))
@@ -122,17 +132,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             data = json.loads(f.read())
             # calc
             for year_n in range(self.data_year, self.data_year + int(self.minus_year.value()) + 1, 1):
-                data_x = []
+                data_x = []                
                 data_y = []
                 for data_json in data:
                     if dt.datetime.strptime(date_min.strftime("%d.%m.") + str(year_n + corr_year_min), '%d.%m.%Y').date() \
                         <= dt.datetime.strptime(data_json[date_code], '%d.%m.%Y').date() \
                         <= dt.datetime.strptime(date_max.strftime("%d.%m.") + str(year_n + corr_year_max), '%d.%m.%Y').date() \
                             and data_json[currency_code] == self.curr_box.currentText()[:3]:
-                        data_x.append(data_json[date_code][:5])
+                        data_x.append(data_json[date_code][:5])                        
                         data_y.append(data_json[rate_code]/data_json[forc_code])
-                self.xdata.append(data_x)
+                        self.data_db.append((dt.datetime.strptime(data_json[date_code],'%d.%m.%Y').date(), data_json[rate_code]/data_json[forc_code]))
+                self.xdata.append(data_x)                
                 self.ydata.append(data_y)
+
             # average  
             if self.check_average.isChecked():
                 ydata_temp = []
@@ -192,25 +204,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     Error_MessageBox_Window("Для указанного месяца указана некорректный день", is_exit=False).show()                
                     self.is_check_day_month_year = False
 
+
     ######################################
     # event - day_box - currentIndexChanged
     def on_day_box_index_changed(self):
         self.check_day_month_year()
+
 
     ######################################
     # event - month_box - currentIndexChanged
     def on_month_box_index_changed(self):
         self.check_day_month_year()       
 
+
     ######################################
     # event - year_box - currentTextChanged
     def on_year_box_value_changed(self):
         self.check_day_month_year()        
 
+
    ######################################
     # event - loadButton - Clicked
-    def on_loadButton_clicked(self):
-        webbrowser.open("https://bank.gov.ua/control/uk/curmetal/currency/search/form/period")        
+    def on_loadButton_clicked_(self):
+        webbrowser.open("https://bank.gov.ua/control/uk/curmetal/currency/search/form/period") 
+
+
+   ######################################
+    # event - reportButton - Clicked
+    def on_reportButton_clicked_(self):
+        #
+        match self.report_box.currentText():
+            case "SQLite":
+                self_report = load_data_report_sqlite()
+            case _:
+                pass                
+        generate_report(self_report.data_report, self.report_box.currentText())
+#        "PostgreSQL"
+#        "Oracle"
+#        "MSSQL"
+#        "AzureSQL"
+#        "MySQL"
+#        "MariaDB"
+#        "IBM DB2"
+#        "IBM Informix"
+#        "Firebird"
+#        "AuroraMySQL"
+#        "AuroraPostgreSQL"
+#        "MongoDB"
+#        "Cassandra"
 
 
 # primary block code

@@ -1,5 +1,6 @@
 # Python_CurrencyChart-PyQt6-VS
-Python PyQt6 project VS Code - Creation of schedules of NBU exchange rates by year to monitor change trends.
+Python PyQt6 project VS Code - generating report from DB (SQLite).
+Creation of schedules of NBU exchange rates by year to monitor change trends.
 
 IDE - Visual Studio Code
 
@@ -14,6 +15,7 @@ IDE - Visual Studio Code
 -> pip install pyqt6-tools
 -> pip install python-dateutil
 -> pip install matplotlib
+-> pip install reportlab
 
 3) Qt Designer
 Запускаємо -> pyqt6-tools designer або окремо встановлюємо
