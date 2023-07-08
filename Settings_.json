@@ -1,12 +1,4 @@
 {
-    "ConnectionOracle": {
-         "JDBCConnection": "jdbc:oracle:thin:@localhost:1521:FREE",
-         "DBUser": "TEST_USER",
-         "DBPassword": "!Aa112233",
-         "DBInsertSchema": "TEST_USER",
-         "DBInsertProcedure": "INSERT_KURS",
-         "IsEnable": false
-         },
     "ConnectionMSSQL": {
          "JDBCConnection_WA": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;integratedSecurity=true;encrypt=true;",
          "JDBCConnection": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;user=sa;password=!Aa112233;encrypt=true;",

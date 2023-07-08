@@ -1,6 +1,6 @@
 {
     "ConnectionSQLite": {
-         "IsEnable": true
+         "IsEnable": false
          },
     "ConnectionPostgreSQL": {
          "DBHost": "localhost",
@@ -11,7 +11,7 @@
          "DBSchema": "test_schemas",
          "DBInsertProcedure": "INSERT_CURS",
          "DBSelectView": "view_kurs_report",
-         "IsEnable": true
+         "IsEnable": false
          },
     "ConnectionAuroraPostgreSQL": {
          "DBHost": "aurorapostgresqldb-instance-1.c5bnmatchwcd.us-east-1.rds.amazonaws.com",
@@ -22,7 +22,7 @@
          "DBSchema": "test_schemas",
          "DBInsertProcedure": "INSERT_CURS",
          "DBSelectView": "view_kurs_report",
-         "IsEnable": true
+         "IsEnable": false
          },
     "ConnectionMySQL": {
          "DBHost": "localhost",
@@ -32,7 +32,7 @@
          "DBSchema": "test_schemas",
          "DBInsertProcedure": "INSERT_CURS",
          "DBSelectView": "CURS_REPORT",
-         "IsEnable": true
+         "IsEnable": false
          },
     "ConnectionAuroraMySQL": {
          "DBHost": "auroramysqldb-instance-1.c5bnmatchwcd.us-east-1.rds.amazonaws.com",
@@ -42,7 +42,7 @@
          "DBSchema": "testdb",
          "DBInsertProcedure": "INSERT_CURS",
          "DBSelectView": "CURS_REPORT",
-         "IsEnable": true
+         "IsEnable": false
          },
     "ConnectionMariaDB": {
          "DBHost": "localhost",
@@ -52,6 +52,17 @@
          "DBSchema": "test_schemas",
          "DBInsertProcedure": "INSERT_CURS",
          "DBSelectView": "CURS_REPORT",
+         "IsEnable": false
+         },
+    "ConnectionOracle": {
+         "DBHost": "localhost",
+         "DBPort": 1521,
+         "DBName": "FREE",
+         "DBUser": "TEST_USER",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "TEST_USER",
+         "DBInsertProcedure": "INSERT_KURS",
+         "DBSelectView": "view_kurs_report",
          "IsEnable": true
          }
 }

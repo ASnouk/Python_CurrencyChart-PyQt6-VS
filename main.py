@@ -19,6 +19,7 @@ import db_sqlite as db_sqlite
 import db_postgresql as db_postgresql
 import db_mysql as db_mysql
 import db_mariadb as db_mariadb
+import db_oracle as db_oracle
 
 
 class Error_MessageBox_Window(QMessageBox):
@@ -115,6 +116,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         is_enable = self.data_set_find[0]
         if is_enable:
             db_mariadb.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # oracle
+        type_db = "Oracle"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_oracle.add_db(self.data_db, curr_code, self.data_set_find, type_db)
 
 
     # read settings
@@ -324,14 +332,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self_report = db_mysql.load_data_report(self.data_set_find, type_db)
                 case "MariaDB":
                     self_report = db_mariadb.load_data_report(self.data_set_find, type_db)
+                case "Oracle":
+                    self_report = db_oracle.load_data_report(self.data_set_find, type_db)
+
                 case _:
                     pass
 
             if not self_report == []:
                 generate_report(self_report, type_db)    
             else:
-                Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " невозможно, ошибка получения данных", is_exit=False).show()      
-    #        "Oracle"
+                Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " невозможно, ошибка получения данных", is_exit=False).show()          
+
     #        "MSSQL"
     #        "AzureSQL"
     #        "IBM DB2"

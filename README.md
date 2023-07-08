@@ -20,6 +20,7 @@ IDE - Visual Studio Code
 -> pip install psycopg2 (PostgreSQL)
 -> pip install mysql-connector-python (MySQL)
 -> pip install mariadb (MariaDB)
+-> pip install oracledb (Oracle)
 
 3) Qt Designer
 Запускаємо -> pyqt6-tools designer або окремо встановлюємо
