@@ -1,5 +1,5 @@
 # Python_CurrencyChart-PyQt6-VS
-Python PyQt6 project VS Code - generating report from DB (PostgreSQL, MySQL, MariaDB, SQLite, Amazon Aurora MySQL, Amazon Aurora PostgreSQL).
+Python PyQt6 project VS Code - generating report from DB (Oracle, PostgreSQL, MySQL, MariaDB, SQLite, Amazon Aurora MySQL, Amazon Aurora PostgreSQL).
 Creation of schedules of NBU exchange rates by year to monitor change trends.
 
 IDE - Visual Studio Code
