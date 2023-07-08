@@ -1,0 +1,56 @@
+{
+    "ConnectionOracle": {
+         "JDBCConnection": "jdbc:oracle:thin:@localhost:1521:FREE",
+         "DBUser": "TEST_USER",
+         "DBPassword": "!Aa112233",
+         "DBInsertSchema": "TEST_USER",
+         "DBInsertProcedure": "INSERT_KURS",
+         "IsEnable": false
+         },
+    "ConnectionMSSQL": {
+         "JDBCConnection_WA": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;integratedSecurity=true;encrypt=true;",
+         "JDBCConnection": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;user=sa;password=!Aa112233;encrypt=true;",
+         "DBInsertProcedure": "INSERT_KURS",
+         "Security_mode_WA": true,
+         "IsEnable": false
+         },
+    "ConnectionAzureSQL": {
+         "JDBCConnection": "jdbc:sqlserver://dbserver-test-lia.database.windows.net:1433;database=TestDB;user=admin-dbserver;password=!Dddsfgdfgdfg34534534534;encrypt=true;loginTimeout=30;",
+         "DBInsertProcedure": "INSERT_KURS",
+         "IsEnable": false
+         },
+    "ConnectionIBMDB2": {
+         "JDBCConnection": "jdbc:db2://localhost:50000/SAMPLE:user=DB2INST1;password=!Aa112233;",
+         "DBInsertSchema": "test_schemas",
+         "DBInsertProcedure": "INSERT_KURS",
+         "IsEnable": false
+         },
+    "ConnectionIBMInformix": {
+         "JDBCConnection": "jdbc:informix-sqli://localhost:9088/sysadmin:INFORMIXSERVER=informix;user=informix;password=!Aa112233;DB_LOCALE=EN_US.8859-1;CLIENT_LOCALE=EN_US.8859-1;charSet=8859-1;",
+         "DBInsertProcedure": "INSERT_KURS",
+         "IsEnable": false
+         },
+    "ConnectionFirebird": {
+         "JDBCConnection": "jdbc:firebirdsql://localhost:3050//firebird/data/testdb.fdb?encoding=ISO8859_1",
+         "DBUser": "SYSDBA",
+         "DBPassword": "!Aa112233",
+         "DBInsertProcedure": "INSERT_KURS",
+         "IsEnable": false
+         },
+    "ConnectionMongoDB": {
+         "JDBCConnection": "jdbc:mongodb://localhost:27017/testDB?authMechanism=SCRAM-SHA-1&authSource=admin",
+         "DBUser": "root",
+         "DBPassword": "!Aa112233",
+         "MongoDBHost": "localhost",
+         "MongoDBPort": 27017,
+         "MongoDBDatabase": "testDB",
+         "MongoDBCollection": "Curs",
+         "IsEnable": false
+         },
+    "ConnectionCassandra": {
+         "JDBCConnection": "jdbc:cassandra://localhost:9042/testdb",
+         "DBUser": "cassandra",
+         "DBPassword": "!Aa112233",
+         "IsEnable": false
+         }
+}

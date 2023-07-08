@@ -1,0 +1,57 @@
+{
+    "ConnectionSQLite": {
+         "IsEnable": true
+         },
+    "ConnectionPostgreSQL": {
+         "DBHost": "localhost",
+         "DBPort": 5432,
+         "DBName": "testdb",
+         "DBUser": "testdb",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "test_schemas",
+         "DBInsertProcedure": "INSERT_CURS",
+         "DBSelectView": "view_kurs_report",
+         "IsEnable": true
+         },
+    "ConnectionAuroraPostgreSQL": {
+         "DBHost": "aurorapostgresqldb-instance-1.c5bnmatchwcd.us-east-1.rds.amazonaws.com",
+         "DBPort": 5433,
+         "DBName": "testdb",
+         "DBUser": "testdb",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "test_schemas",
+         "DBInsertProcedure": "INSERT_CURS",
+         "DBSelectView": "view_kurs_report",
+         "IsEnable": true
+         },
+    "ConnectionMySQL": {
+         "DBHost": "localhost",
+         "DBPort": 3306,
+         "DBUser": "test_user",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "test_schemas",
+         "DBInsertProcedure": "INSERT_CURS",
+         "DBSelectView": "CURS_REPORT",
+         "IsEnable": true
+         },
+    "ConnectionAuroraMySQL": {
+         "DBHost": "auroramysqldb-instance-1.c5bnmatchwcd.us-east-1.rds.amazonaws.com",
+         "DBPort": 3308,
+         "DBUser": "test_user",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "testdb",
+         "DBInsertProcedure": "INSERT_CURS",
+         "DBSelectView": "CURS_REPORT",
+         "IsEnable": true
+         },
+    "ConnectionMariaDB": {
+         "DBHost": "localhost",
+         "DBPort": 3307,
+         "DBUser": "test_user",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "test_schemas",
+         "DBInsertProcedure": "INSERT_CURS",
+         "DBSelectView": "CURS_REPORT",
+         "IsEnable": true
+         }
+}

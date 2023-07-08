@@ -15,15 +15,18 @@ from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationTo
 from matplotlib.figure import Figure
 
 from report import generate_report
-from db_sqlite import add_db_sqlite, load_data_report_sqlite
+import db_sqlite as db_sqlite
+import db_postgresql as db_postgresql
+import db_mysql as db_mysql
+import db_mariadb as db_mariadb
 
 
-class Error_MessageBox_Window(QWidget):
-    def __init__(self, text_error, is_exit=True):
-        super().__init__()
+class Error_MessageBox_Window(QMessageBox):
+    def __init__(self, text_error, is_exit=True, parent=None):        
+        super(Error_MessageBox_Window, self).__init__(parent)
         dialog = QMessageBox.critical(self, "Error", text_error, QMessageBox.StandardButton.Ok)
         if dialog == QMessageBox.StandardButton.Ok and is_exit:
-            sys.exit()
+            sys.exit()        
 
 class MplCanvas(FigureCanvas):
     def __init__(self, parent=None, width=5, height=4, dpi=100):
@@ -63,15 +66,85 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.update_plot()
         self.show()        
         
+        self.read_settings()
+        
         ##########################################################################        
         # add curs db        
         ##########################################################################        
         curr_code = self.curr_box.currentText()[:3]        
         #
+        #############
         # sqlite
-        add_db_sqlite(self.data_db, curr_code)
+        type_db = "SQLite"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_sqlite.add_db(self.data_db, curr_code, type_db)
+        #############
+        # postgresql
+        type_db = "PostgreSQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_postgresql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # postgresql
+        type_db = "AuroraPostgreSQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_postgresql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # mysql
+        type_db = "MySQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_mysql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # mysql
+        type_db = "AuroraMySQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_mysql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # mariadb
+        type_db = "MariaDB"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_mariadb.add_db(self.data_db, curr_code, self.data_set_find, type_db)
 
 
+    # read settings
+    def read_settings(self):
+            if not os.path.isfile("Settings.json"):
+                Error_MessageBox_Window(text_error="File 'Settings.json' not found").show()                
+            # Opening JSON file
+            f = open(file="Settings.json", mode="r", encoding="utf8")
+            self.data_settings = json.loads(f.read())   
+            # Closing file
+            f.close()            
+
+    # find settings
+    def find_settings(self, type_d = ""):
+            self.data_set_find = (self.get_json_key_present(self.data_settings, "Connection" + type_d, "IsEnable"),           # 0
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBHost"),             # 1
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBPort"),             # 2
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBName"),             # 3
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBUser"),             # 4
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBPassword"),         # 5
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBSchema"),           # 6
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBInsertProcedure"),  # 7         
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBSelectView"))  # 8
+    # check exists json key
+    def get_json_key_present(self, json, key, key2):
+        try:
+            return json[key][key2]
+        except KeyError:
+            return ""
+    
     # calc data
     def calc_data(self):
         #
@@ -233,25 +306,41 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     # event - reportButton - Clicked
     def on_reportButton_clicked_(self):
         #
-        match self.report_box.currentText():
-            case "SQLite":
-                self_report = load_data_report_sqlite()
-            case _:
-                pass                
-        generate_report(self_report.data_report, self.report_box.currentText())
-#        "PostgreSQL"
-#        "Oracle"
-#        "MSSQL"
-#        "AzureSQL"
-#        "MySQL"
-#        "MariaDB"
-#        "IBM DB2"
-#        "IBM Informix"
-#        "Firebird"
-#        "AuroraMySQL"
-#        "AuroraPostgreSQL"
-#        "MongoDB"
-#        "Cassandra"
+        type_db = self.report_box.currentText()
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            self_report = []
+            match type_db:
+                case "SQLite":
+                    self_report = db_sqlite.load_data_report(type_db)
+                case "PostgreSQL":
+                    self_report = db_postgresql.load_data_report(self.data_set_find, type_db)
+                case "AuroraPostgreSQL":
+                    self_report = db_postgresql.load_data_report(self.data_set_find, type_db)
+                case "MySQL":
+                    self_report = db_mysql.load_data_report(self.data_set_find, type_db)
+                case "AuroraMySQL":
+                    self_report = db_mysql.load_data_report(self.data_set_find, type_db)
+                case "MariaDB":
+                    self_report = db_mariadb.load_data_report(self.data_set_find, type_db)
+                case _:
+                    pass
+
+            if not self_report == []:
+                generate_report(self_report, type_db)    
+            else:
+                Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " невозможно, ошибка получения данных", is_exit=False).show()      
+    #        "Oracle"
+    #        "MSSQL"
+    #        "AzureSQL"
+    #        "IBM DB2"
+    #        "IBM Informix"
+    #        "Firebird"
+    #        "MongoDB"
+    #        "Cassandra"
+        else:
+            Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " выключено", is_exit=False).show()  
 
 
 # primary block code
