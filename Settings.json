@@ -63,6 +63,34 @@
          "DBSchema": "TEST_USER",
          "DBInsertProcedure": "INSERT_KURS",
          "DBSelectView": "view_kurs_report",
+         "IsEnable": false
+         },
+    "ConnectionMSSQL": {
+         "DBHost": "localhost",
+         "DBPort": 1433,
+         "DBName": "DatabaseTestDBDocker",
+         "DBUser": "sa",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "dbo",
+         "DBInsertProcedure": "INSERT_KURS",
+         "DBSelectView": "view_kurs_report",
+         "Trusted_Connection": false,
+         "DriverPython": "pyodbc",
+         "Encrypt": "no",
          "IsEnable": true
+         },
+    "ConnectionAzureSQL": {
+         "DBHost": "dbserver-test-lia.database.windows.net",
+         "DBPort": 1433,
+         "DBName": "TestDB",
+         "DBUser": "admin-dbserver",
+         "DBPassword": "!Aa112233",
+         "DBSchema": "dbo",
+         "DBInsertProcedure": "INSERT_KURS",
+         "DBSelectView": "view_kurs_report",
+         "Trusted_Connection": false,
+         "DriverPython": "pymssql",
+         "Encrypt": "yes",
+         "IsEnable": false
          }
 }

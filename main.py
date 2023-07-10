@@ -20,6 +20,7 @@ import db_postgresql as db_postgresql
 import db_mysql as db_mysql
 import db_mariadb as db_mariadb
 import db_oracle as db_oracle
+import db_mssql as db_mssql
 
 
 class Error_MessageBox_Window(QMessageBox):
@@ -123,6 +124,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         is_enable = self.data_set_find[0]
         if is_enable:
             db_oracle.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # mssql
+        type_db = "MSSQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_mssql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
+        #############
+        # azuresql
+        type_db = "AzureSQL"
+        self.find_settings(type_db)
+        is_enable = self.data_set_find[0]
+        if is_enable:
+            db_mssql.add_db(self.data_db, curr_code, self.data_set_find, type_db)
 
 
     # read settings
@@ -145,7 +160,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                   self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBPassword"),         # 5
                                   self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBSchema"),           # 6
                                   self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBInsertProcedure"),  # 7         
-                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBSelectView"))  # 8
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DBSelectView"),       # 8
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "Trusted_Connection"), # 9                                  
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "DriverPython"),       # 10
+                                  self.get_json_key_present(self.data_settings, "Connection" + type_d, "Encrypt"),            # 11
+                                  )  
     # check exists json key
     def get_json_key_present(self, json, key, key2):
         try:
@@ -334,6 +353,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self_report = db_mariadb.load_data_report(self.data_set_find, type_db)
                 case "Oracle":
                     self_report = db_oracle.load_data_report(self.data_set_find, type_db)
+                case "MSSQL":
+                    self_report = db_mssql.load_data_report(self.data_set_find, type_db)
+                case "AzureSQL":
+                    self_report = db_mssql.load_data_report(self.data_set_find, type_db)
 
                 case _:
                     pass
@@ -341,10 +364,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if not self_report == []:
                 generate_report(self_report, type_db)    
             else:
-                Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " невозможно, ошибка получения данных", is_exit=False).show()          
-
-    #        "MSSQL"
-    #        "AzureSQL"
+                Error_MessageBox_Window("Формирование отчета для базы данных " + type_db + " невозможно, ошибка получения данных", is_exit=False).show()              
+    
+    #        
     #        "IBM DB2"
     #        "IBM Informix"
     #        "Firebird"

@@ -1,16 +1,4 @@
 {
-    "ConnectionMSSQL": {
-         "JDBCConnection_WA": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;integratedSecurity=true;encrypt=true;",
-         "JDBCConnection": "jdbc:sqlserver://localhost;databaseName=DatabaseTestDBDocker;user=sa;password=!Aa112233;encrypt=true;",
-         "DBInsertProcedure": "INSERT_KURS",
-         "Security_mode_WA": true,
-         "IsEnable": false
-         },
-    "ConnectionAzureSQL": {
-         "JDBCConnection": "jdbc:sqlserver://dbserver-test-lia.database.windows.net:1433;database=TestDB;user=admin-dbserver;password=!Dddsfgdfgdfg34534534534;encrypt=true;loginTimeout=30;",
-         "DBInsertProcedure": "INSERT_KURS",
-         "IsEnable": false
-         },
     "ConnectionIBMDB2": {
          "JDBCConnection": "jdbc:db2://localhost:50000/SAMPLE:user=DB2INST1;password=!Aa112233;",
          "DBInsertSchema": "test_schemas",
